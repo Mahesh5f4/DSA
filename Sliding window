@@ -1,0 +1,127 @@
+992. Subarrays with K Different Integers
+Solved
+Hard
+Topics
+premium lock icon
+Companies
+Hint
+Given an integer array nums and an integer k, return the number of good subarrays of nums.
+
+A good array is an array where the number of different integers in that array is exactly k.
+
+For example, [1,2,3,1,2] has 3 different integers: 1, 2, and 3.
+A subarray is a contiguous part of an array.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,1,2,3], k = 2
+Output: 7
+Explanation: Subarrays formed with exactly 2 different integers: [1,2], [2,1], [1,2], [2,3], [1,2,1], [2,1,2], [1,2,1,2]
+Example 2:
+
+Input: nums = [1,2,1,3,4], k = 3
+Output: 3
+Explanation: Subarrays formed with exactly 3 different integers: [1,2,1,3], [2,1,3], [1,3,4].
+ 
+
+Constraints:
+
+1 <= nums.length <= 2 * 104
+1 <= nums[i], k <= nums.length
+
+
+
+
+
+
+
+class Solution {
+    public int subarraysWithKDistinct(int[] nums, int k) {
+        return maggie(nums,k)-maggie(nums,k-1);
+       
+    }
+    private int maggie(int[] nums,int k){
+        Map<Integer,Integer> mpp=new HashMap<>();
+        int left=0;
+        int count=0;
+        for(int right=0;right<nums.length;right++){
+            mpp.put(nums[right],mpp.getOrDefault(nums[right],0)+1);
+            while(mpp.size()>k){
+                mpp.put(nums[left],mpp.get(nums[left])-1);
+                if(mpp.get(nums[left])==0){
+                    mpp.remove(nums[left]);
+                }
+                left++;
+            
+            
+            }
+            count+=right-left+1;
+        }
+         return count;
+
+
+    }
+   
+}
+
+
+
+209. Minimum Size Subarray Sum
+Solved
+Medium
+Topics
+premium lock icon
+Companies
+Given an array of positive integers nums and a positive integer target, return the minimal length of a subarray whose sum is greater than or equal to target. If there is no such subarray, return 0 instead.
+
+ 
+
+Example 1:
+
+Input: target = 7, nums = [2,3,1,2,4,3]
+Output: 2
+Explanation: The subarray [4,3] has the minimal length under the problem constraint.
+Example 2:
+
+Input: target = 4, nums = [1,4,4]
+Output: 1
+Example 3:
+
+Input: target = 11, nums = [1,1,1,1,1,1,1,1]
+Output: 0
+ 
+
+Constraints:
+
+1 <= target <= 109
+1 <= nums.length <= 105
+1 <= nums[i] <= 104
+
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        int n=nums.length;
+        int ans=Integer.MAX_VALUE;
+        
+        int left=0;
+        int right=0;
+        int sum=0;
+        while(right<n){
+            sum+=nums[right];
+            while(sum>=target){
+                ans=Math.min(ans,right-left+1);
+                sum-=nums[left];
+                left++;
+            }
+            right++;
+
+
+        }
+        if(ans==Integer.MAX_VALUE){
+            return 0;
+        }
+        return ans;
+        
+    }
+}
